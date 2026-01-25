@@ -7,3 +7,9 @@ class Player:
     
     def __str__(self):
         return f"{self.name} ({self.position}) - {self.value}"
+    
+class Team:
+    def __init__(self, roster):
+        self.roster = roster
+    
+    

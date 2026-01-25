@@ -1,4 +1,6 @@
 import requests
+from requests_cache import CachedSession
+
 BASE_URL = "https://api.sleeper.app/v1"
 
 '''
@@ -59,5 +61,16 @@ Gets all users in a league
 def get_users(league_id):
     url = f"{BASE_URL}/league/{league_id}/users"
     response = requests.get(url)
+    response.raise_for_status()
+    return response.json()
+
+
+players_url = "https://api.sleeper.app/v1/players/nfl"
+session = CachedSession(
+  cache_name='cache/sleeper_players',
+  expire_after=60*60*24
+)
+def get_players():
+    response = session.get(players_url)
     response.raise_for_status()
     return response.json()

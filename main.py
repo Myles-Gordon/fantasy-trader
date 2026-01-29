@@ -1,17 +1,21 @@
 from fantasycalc_api import fetch_player_values, parse_players
 from sleeper_api import get_user_id, get_leagues, get_league_id_by_name, get_league, get_rosters, get_users, get_players
+from player_mapper import map_roster_to_players
 
 
-raw = fetch_player_values()
-players = parse_players(raw)
+raw_values = fetch_player_values(False, 1, 10, 1)
+fantasycalc_players = parse_players(raw_values)
 
 username="mwexg"
-league_id = get_league_id_by_name("mwexg", "Sci")
+league_id = get_league_id_by_name("mwexg", "SCI")
 league = get_league(league_id)
 roster = get_rosters(league_id)
 sleeper_players = get_players()
 
-if roster:
-  print(roster)
+#if roster:
+  #print(roster)
+print(roster[4])
+team0 = map_roster_to_players(roster[4]["players"], sleeper_players, fantasycalc_players)
 
-print(players[0])
+for item in team0:
+    print(item)

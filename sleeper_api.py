@@ -64,12 +64,17 @@ def get_users(league_id):
     response.raise_for_status()
     return response.json()
 
-
+'''
+Cache players to reduce API calls
+'''
 players_url = "https://api.sleeper.app/v1/players/nfl"
 session = CachedSession(
   cache_name='cache/sleeper_players',
   expire_after=60*60*24
 )
+'''
+Get players from sleeper api
+'''
 def get_players():
     response = session.get(players_url)
     response.raise_for_status()

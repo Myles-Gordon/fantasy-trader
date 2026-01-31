@@ -8,14 +8,16 @@ fantasycalc_players = parse_players(raw_values)
 
 username="mwexg"
 league_id = get_league_id_by_name("mwexg", "SCI")
+#print(league_id)
 league = get_league(league_id)
 roster = get_rosters(league_id)
 sleeper_players = get_players()
 
 #if roster:
   #print(roster)
-print(roster[4])
-team0 = map_roster_to_players(roster[4]["players"], sleeper_players, fantasycalc_players)
+#print(roster[4])
+users = get_users(league_id)
+team0 = map_roster_to_players("mwexg", users, roster, sleeper_players, fantasycalc_players)
 
 for item in team0:
     print(item)

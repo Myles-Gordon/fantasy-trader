@@ -1,4 +1,4 @@
-from models import Player
+from player import Player
 
 def map_roster_to_players(team_name, users, roster, sleeper_players, fantasycalc_players):
     owner_id = get_user_id(team_name, users)

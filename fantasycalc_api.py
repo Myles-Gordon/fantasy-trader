@@ -1,5 +1,5 @@
 import requests
-from models import Player
+from player import Player
 from requests_cache import CachedSession
 
 BASE_URL = "https://api.fantasycalc.com/values/current"

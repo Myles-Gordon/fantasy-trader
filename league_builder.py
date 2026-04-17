@@ -1,5 +1,4 @@
 from team import Team
-from player_mapper import map_roster_to_players
 
 LINEUP = {
     "QB": 1,

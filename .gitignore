@@ -1,0 +1,19 @@
+# Virtual environments
+.venv/
+venv/
+
+# API cache
+cache/
+
+# Python
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+
+# macOS
+.DS_Store
+
+# IDE
+.vscode/
+.idea/

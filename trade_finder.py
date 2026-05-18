@@ -175,7 +175,7 @@ def debug_trade_search(my_team, all_teams: dict, my_weaknesses: list, league_ave
                     print(f"    give={give.name}({give.position},{give.value}) receive={receive.name}({receive.position},{receive.value}) fairness={fp:.2f} my_imp={my_imp:.0f} their_imp={their_imp:.0f}")
 
 
-def find_trades(my_team, all_teams: dict, my_weaknesses: list, league_averages: dict, top_n: int = 10):
+def find_trades(my_team, all_teams: dict, my_weaknesses: list, league_averages: dict, top_n: int = 10, fairness_threshold: float = 0.10):
     """Finds 1-for-1 cross-position trades where both teams improve."""
     proposals = []
     my_weakness_map = _position_map(my_weaknesses)
@@ -216,7 +216,7 @@ def find_trades(my_team, all_teams: dict, my_weaknesses: list, league_averages: 
                     if give.position == receive.position:
                         continue  # Skip same-position trades
                     fp = _fairness_pct(give.value, receive.value)
-                    if fp > FAIRNESS_THRESHOLD:
+                    if fp > fairness_threshold:
                         continue
 
                     my_improvement = _net_starter_improvement(my_team, [give], [receive])
@@ -278,7 +278,7 @@ def find_trades(my_team, all_teams: dict, my_weaknesses: list, league_averages: 
     return _dedup_and_trim(proposals, top_n)
 
 
-def find_package_trades(my_team, all_teams: dict, my_weaknesses: list, league_averages: dict, top_n: int = 10):
+def find_package_trades(my_team, all_teams: dict, my_weaknesses: list, league_averages: dict, top_n: int = 10, fairness_threshold: float = 0.10):
     """
     Finds 2-for-1 and 1-for-2 cross-position package trades where both teams
     net improve their total starter value (loose mutual benefit check).
@@ -325,7 +325,7 @@ def find_package_trades(my_team, all_teams: dict, my_weaknesses: list, league_av
                     if receive.value == 0:
                         continue
                     fp = _fairness_pct(value_sent, receive.value)
-                    if fp > FAIRNESS_THRESHOLD:
+                    if fp > fairness_threshold:
                         continue
                     my_improvement = _net_starter_improvement(my_team, list(give_pair), [receive])
                     their_improvement = _net_starter_improvement(other_team, [receive], list(give_pair))
@@ -381,7 +381,7 @@ def find_package_trades(my_team, all_teams: dict, my_weaknesses: list, league_av
                 if give.value == 0:
                     continue
                 fp = _fairness_pct(give.value, value_received)
-                if fp > FAIRNESS_THRESHOLD:
+                if fp > fairness_threshold:
                     continue
                 my_improvement = _net_starter_improvement(my_team, [give], list(their_chip_pair))
                 their_improvement = _net_starter_improvement(other_team, list(their_chip_pair), [give])

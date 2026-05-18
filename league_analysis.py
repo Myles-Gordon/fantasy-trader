@@ -105,6 +105,40 @@ def identify_weaknesses(my_team, league_averages: dict) -> list:
     return weaknesses
 
 
+def print_team_overview(weaknesses: list):
+    above = [w for w in weaknesses if w["deficit"] <= 0]
+    below = [w for w in weaknesses if w["deficit"] > 0]
+
+    print("\n=== TEAM OVERVIEW ===\n")
+    print(f"{'Position':<10} {'Your Value':>12} {'League Avg':>12} {'Difference':>12}  Rank")
+    print("-" * 58)
+    for w in sorted(weaknesses, key=lambda x: x["position"]):
+        pos      = w["position"]
+        mine     = w["my_starter_value"]
+        avg      = w["scaled_avg"]
+        diff     = mine - avg
+        symbol   = "▲" if diff >= 0 else "▼"
+        print(f"{pos:<10} {mine:>12.0f} {avg:>12.0f} {diff:>+12.0f}  {symbol}")
+
+    print()
+    if not below:
+        print("Your team is above league average at every position.")
+        print("Trading may not be necessary — you are well-rounded.")
+    elif not above:
+        print("Your team is below league average at every position.")
+        print("Consider multiple trades or targeting high-value pickups.")
+    else:
+        weak_list    = ", ".join(w["position"] for w in below)
+        surplus_list = ", ".join(w["position"] for w in above)
+        print(f"Weak positions:    {weak_list}")
+        print(f"Surplus positions: {surplus_list}")
+        if len(below) <= len(above):
+            print("\nYou have a targeted weakness — trading is worthwhile if a fair deal is available.")
+        else:
+            print("\nYou have more weaknesses than surpluses — prioritize your biggest deficit when trading.")
+    print()
+
+
 def print_weaknesses(weaknesses: list, league_averages: dict):
     print("\n=== POSITION WEAKNESSES (vs League Average) ===\n")
     for w in weaknesses:
